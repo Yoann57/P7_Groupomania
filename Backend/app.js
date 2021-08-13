@@ -1,7 +1,10 @@
 const express = require('express');
 const userRoutes = require('./routes/user');
-
+const helmet = require("helmet");
 const app = express();
+
+
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,7 +31,9 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   console.log('Réponse envoyée avec succès !');
 });
-app.use('/api/stuff', stuffRoutes);
+
+app.use(express.json());
+
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
