@@ -50,20 +50,16 @@ export default {
         return;
       } 
       try {
-        const res = await axios.post("http://localhost:3000/api/signup", {
+        const res = await axios.post('http://localhost:3000/api/signup', {
           email: this.email,
           username: this.username,
           password: this.password,
         })
 
         console.log("Inscription ok", res);
-
-        // let userObject = JSON.stringify(reponse);
-        // this.$localStorage.set("user", userObject);
-        // let user = JSON.parse(this.$localStorage.get("user"));
-        // token = user.token;
+      
         alert("Vous êtes inscrit");
-        // window.location.href = "http://localhost:8080//#/connexion";
+
         this.$router.push('/connection')
       } catch (err) {
         console.log("Echec de l'inscription", err);

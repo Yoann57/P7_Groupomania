@@ -59,9 +59,9 @@ export default {
         return;
       }
        try{
-          await axios.post('/login', this.form);
+          await axios.post('http://localhost:3000/api/login', this.form);
            
-           let response = await axios.get('/api/user')
+           let response = await axios.get('http://localhost:3000/api/user')
      
             console.log("Connection réussi", response);
           

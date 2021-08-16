@@ -2,7 +2,8 @@ const express = require('express');
 const userRoutes = require('./routes/user');
 const helmet = require("helmet");
 const app = express();
-
+const path = require('path');
+const postsRoutes = require('./routes/posts.js');
 
 app.use(helmet());
 
@@ -12,28 +13,17 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-
-app.use((req, res, next) => {
-  console.log('Requête reçue !');
-  next();
-});
-
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
+ 
 
 app.use((req, res, next) => {
   res.json({ message: 'Votre requête a bien été reçue !' });
   next();
 });
 
-app.use((req, res, next) => {
-  console.log('Réponse envoyée avec succès !');
-});
-
 app.use(express.json());
 
 app.use('/api/auth', userRoutes);
+app.use('/api/posts', postsRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 module.exports = app;
