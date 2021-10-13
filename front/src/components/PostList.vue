@@ -79,7 +79,7 @@
 <script>
     import PostService from "../services/post";
     import {
-        mapState,
+        
         mapGetters
     } from "vuex";
 
@@ -101,9 +101,8 @@
         },
         computed: {
             ...mapGetters(['currentUser','isAdmin']),
-
-            ...mapState({
-                posts: "posts",
+            ...mapGetters({
+                posts: 'getPosts'
             })
         },
         async mounted() {

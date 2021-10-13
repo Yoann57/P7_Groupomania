@@ -8,7 +8,9 @@ export const postModule = {
         post:null,
         comments: [],
     },
-    
+    getters: {
+      getPosts:(state) => state.posts
+    },
       mutations: {
     
         setPosts(state, posts) {
