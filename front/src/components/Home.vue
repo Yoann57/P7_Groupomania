@@ -6,7 +6,7 @@
       alt="Logo Groupomania"
     />
     <div class="bienvenue">
-      Bienvenue sur le réseau social de Groupomania
+      Bienvenue sur le réseau social de Groupomania beta
     </div>
     <div class="annonce">
      <router-link to="login">Connectez vous</router-link>  ou <router-link to="register">créez un compte</router-link> pour poster vos messages

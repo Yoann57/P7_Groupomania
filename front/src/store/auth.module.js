@@ -57,5 +57,19 @@ export const auth = {
     registerFailure(state) {
       state.status.loggedIn = false;
     }
-  }
+  },
+  getters: {
+    currentuser(state) {
+      return state.user;
+    },
+    loggedIn(state) {
+      return state.user !== null;
+    },
+    notLogged(state) {
+      return state.user == null;
+    },
+    isAdmin(state) {
+      return state.user.isAdmin === 1;
+    },
+  }, 
 };

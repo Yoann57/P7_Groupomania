@@ -1,16 +1,13 @@
 <template>
-
     <div class="main">
 
-
-        <h1>message ici</h1>
-        <div class="card gedf-card post-card" v-for="post of posts" :key="post.id">
+       <!-- <h1>message ici</h1>-->
+        <div class="card gedf-card post-card" v-for="post in getPosts" :key="post.id">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ml-2">
-                            <div class="h5 m-0">{{ post.User.username }}</div>
-                            <div class="h7 text-muted">{{ post.User.email }}</div>
+                            
                         </div>
                     </div>
                 </div>
@@ -22,7 +19,7 @@
                 <img :src="post.file" class="rounded img-fluid d-flex ml-auto mr-auto" accept="image/*" alt="image">
             </div>
 
-            <div class="card-footer">
+           <!-- <div class="card-footer">
                 <div class="right-footer">
                     <a class="card-link" @click="likePost(post)"><i class="fa fa-gittip"></i></a>
                     <a class="card-link" @click="commentPost(post)"><i class="fa fa-comment"></i></a>
@@ -70,7 +67,7 @@
                             @click="deleteComment(comment)"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
 
@@ -94,18 +91,21 @@
         },
         data() {
             return {
+                postTests: [{ text: "Hello", file:"", User: { username: 'Simon', email: 'simon@imal.com' } }],
                 comment: {
                     message: "",
                 },
             }
         },
         computed: {
-            ...mapGetters(['currentUser','isAdmin']),
-            ...mapGetters({
-                posts: 'getPosts'
-            })
+            ...mapGetters(['currentUser'
+            ]),
+            ...mapGetters(['getPosts']
+                 
+            )
         },
         async mounted() {
+            console.log("mouted")
             await this.$store.dispatch("getAllPosts")
         },
 

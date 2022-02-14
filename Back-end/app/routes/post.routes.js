@@ -33,7 +33,7 @@ module.exports = function(app) {
   });
 
   app.get(
-    "/", 
+    "/posts", 
     [authJwt.verifyToken],
      postCtrl.getAllPosts
      );
@@ -41,7 +41,7 @@ module.exports = function(app) {
   app.get('/posts/:id', [authJwt.verifyToken], postCtrl.getOnePost);
   app.put('/posts/:id', [authJwt.verifyToken], multer, postCtrl.modifyPost);
   app.delete('/posts/:id', [authJwt.verifyToken], postCtrl.deletePost);
- app.post('/posts/:id/like', [authJwt.verifyToken], postCtrl.likePost);
- app.post('/posts/:id/comment', [authJwt.verifyToken], commentCtrl.addComment);
+ app.post('/posts/like', [authJwt.verifyToken], postCtrl.likePost);
+ app.post('/posts/comment', [authJwt.verifyToken], commentCtrl.addComment);
 }
 ////////////////////////////////////

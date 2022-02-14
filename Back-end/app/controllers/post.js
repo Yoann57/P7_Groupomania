@@ -2,29 +2,33 @@ const fs = require("fs");
 
 const db = require("../models");
 const Post = db.post;
+const User = db.user;
 
 exports.createPost = (req, res, next) => {
-  console.log(Post);
 
   const post = Post.create({
     text: req.body.text,
-    UserId: req.userId,
+    userId: req.body.userId,
     file: req.file
       ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
       : null,
-  });
+  },
+  );
 
   post
-    .then((newPost) => res.status(201).json(newPost))
-    .catch((error) =>
+    .then((newPost) =>
+    
+    res.status(201).json(newPost))
+    .catch((error) =>{
+    console.error(error)
       res.status(400).json({
         error,
       })
-    );
+    });
 };
 
 exports.modifyPost = (req, res, next) => {
-  const Post = models.Post;
+  
 
   Post.findOne({
     where: {
@@ -70,7 +74,7 @@ exports.modifyPost = (req, res, next) => {
 };
 
 exports.deletePost = (req, res, next) => {
-  const Post = models.Post;
+  
 
   Post.findOne({
     where: {
@@ -79,27 +83,18 @@ exports.deletePost = (req, res, next) => {
   })
     .then((post) => {
       if (req.userId == post.UserId || req.userRole === 1) {
-        const filename = post.file.split("/images/")[1];
-        fs.unlink(`images/${filename}`, () => {
-          post
-            .destroy({
-              where: {
-                id: req.params.id,
-              },
-            })
-            .then(() =>
-              res.status(200).json({
-                message: "Post supprimé !",
-              })
-            )
-            .catch((error) =>
-              res.status(400).json({
-                error,
-              })
-            );
-        });
+        
+        if (req.file) {
+          dataDestroy.file = `${req.protocol}://${req.get("host")}/images/${
+            req.file.filename
+          }`;
+        }
+          post.destroy()
+      return res.status(200).json({
+        response:"ok",
+      })
       } else {
-        res.status(403).json({
+        return res.status(403).json({
           error: "UnAuthorize",
         });
       }
@@ -112,8 +107,7 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.getOnePost = (req, res, next) => {
-  const Post = models.Post;
-  const User = models.User;
+  
 
   Post.findOne({
     where: {
@@ -136,30 +130,8 @@ exports.getOnePost = (req, res, next) => {
 };
 
 exports.getAllPosts = (req, res, next) => {
-  const Post = models.Post;
-  const User = models.User;
-  const Like = models.Like;
-  const Comment = models.Comment;
-
-  Post.findAll({
-    order: [["createdAt", "DESC"]],
-    include: [
-      {
-        model: User,
-      },
-      {
-        model: Like,
-      },
-      {
-        model: Comment,
-        include: [
-          {
-            model: User,
-          },
-        ],
-      },
-    ],
-  })
+  
+  Post.findAll()
     .then((posts) => {
       res.status(200).json(posts);
     })
@@ -177,14 +149,14 @@ exports.likePost = async (req, res, next) => {
   try {
     const previousLike = await Like.findOne({
       where: {
-        UserId: req.userId,
+        userId: req.userId,
         PostId: PostId,
       },
     });
 
     if (!previousLike) {
       const response = await Like.create({
-        UserId: req.userId,
+        userId: req.userId,
         PostId: PostId,
       });
       return res.status(201).json({

@@ -11,20 +11,6 @@ const store = createStore({
   
   
 },
-getters: {
-  currentUser(state) {
-    return state.currentUser;
-  },
-  loggedIn(state) {
-    return state.currentUser !== null;
-  },
-  notLogged(state) {
-    return state.currentUser == null;
-  },
-  isAdmin(state) {
-    return state.currentUser.isAdmin === 1;
-  },
-}, 
 
 
 });

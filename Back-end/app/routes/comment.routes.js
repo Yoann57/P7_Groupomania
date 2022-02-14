@@ -23,7 +23,7 @@ module.exports = function(app) {
       );
       next();
     });
-app.get('/:id', [authJwt.verifyToken], commentCtrl.getOneComment);
-app.delete('/:id', [authJwt.verifyToken], commentCtrl.deleteComment);
-app.put('/:id', [authJwt.verifyToken], commentCtrl.modifyComment);
+app.get('/comment/:id', [authJwt.verifyToken], commentCtrl.getOneComment);
+app.delete('/comment/:id', [authJwt.verifyToken], commentCtrl.deleteComment);
+app.put('/comment/:id', [authJwt.verifyToken], commentCtrl.modifyComment);
 }

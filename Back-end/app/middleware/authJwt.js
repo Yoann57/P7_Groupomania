@@ -4,39 +4,30 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Unauthorized!"
+    const token = req.headers.authorization.split(' ')[1];
+    if (token) {
+      jwt.verify(token, config.secret, (err, decodedToken) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(decodedToken.userId);
+          next();
+        }
       });
+    } else {
+      console.log('no token !');
     }
-    req.userId = decoded.id;
-    next();
-  });
-};
+  };
 
 isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then(user => {
     user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
+      if (roles.some(role => role.name === "admin")) {
+        next()
       }
-
       res.status(403).send({
         message: "Require Admin Role!"
       });
-      return;
     });
   });
 };

@@ -7,6 +7,10 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false,
             autoIncrement: true
         },
+        userId: {
+            type: Datatypes.INTEGER,
+            allowNull: false,
+        },
         text: {
             type: Datatypes.TEXT,
             allowNull: false
@@ -17,13 +21,17 @@ module.exports = (sequelize, Datatypes) => {
         }
     });
     post.associate = (models) => {
-        post.belongsTo(models.User, {
+        post.belongsTo(models.User,{
+            as: 'user',
+            foreignKey: 'userId'
+          })
+        , {
             foreignKey: {
-                allowNull: true
+                allowNull: false
             }, onDelete: 'CASCADE'
-        })
-        post.hasMany(models.Like)
-        post.hasMany(models.Comment)
+       }
+                post.hasMany(models.Like)
+                post.hasMany(models.Comment)
     }
     return post;
 }

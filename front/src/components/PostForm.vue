@@ -38,7 +38,10 @@
 </template>
 
 <script>
-
+ import {
+        
+        mapGetters
+    } from "vuex";
 
 export default {
   name: "createPost",
@@ -52,8 +55,10 @@ export default {
   },
   methods: {
    async submitForm() {
+     console.log(this.$store.state.auth.user);
       const newPost = new FormData();
       newPost.append("text", this.text);
+       newPost.append("userId", this.$store.state.auth.user.id);
       this.file = this.$refs.file.files[0];
       if (this.file !== null && this.file !== undefined) {
           newPost.append("image", this.file);
@@ -62,6 +67,10 @@ export default {
       await this.$store.dispatch('createPost', newPost)
       
     },
+    computed: {
+            ...mapGetters(['auth/currentUser'
+            ]),
+        },
   },
 };
 </script>

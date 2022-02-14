@@ -7,17 +7,24 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        message: {
+       comment: {
             type: Datatypes.TEXT,
             allowNull: false
+        },
+        userId:{
+            type: Datatypes.INTEGER
         }
     });
     Comment.associate = (models) => {
         Comment.belongsTo(models.User, {
+            as: 'user',
+            foreignKey: 'userId'
+          })
+        , {
             foreignKey: {
                 allowNull: false
             }, onDelete: 'CASCADE'
-        })
+       }
         Comment.belongsTo(models.Post, {
             foreignKey: {
                 allowNull: false
