@@ -9,9 +9,11 @@ exports.createPost = (req, res, next) => {
   const post = Post.create({
     text: req.body.text,
     userId: req.body.userId,
+    username:req.body.username,
     file: req.file
       ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
       : null,
+    
   },
   );
 

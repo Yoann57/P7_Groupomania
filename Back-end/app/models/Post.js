@@ -18,6 +18,10 @@ module.exports = (sequelize, Datatypes) => {
         file: {
             type: Datatypes.STRING,
             allowNull: true
+        },
+        username:{
+            type: Datatypes.STRING,
+            allowNull: false
         }
     });
     post.associate = (models) => {

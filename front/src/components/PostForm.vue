@@ -10,7 +10,8 @@
 							id="text"
 							name="text"
 							rows="6"
-							placeholder="Saisissez votre message. (1500 caractères max)"
+              maxlength="300"
+							placeholder="Saisissez votre message. (300 caractères max)"
 						></textarea>
 					</div>
 					
@@ -59,11 +60,12 @@ export default {
       const newPost = new FormData();
       newPost.append("text", this.text);
        newPost.append("userId", this.$store.state.auth.user.id);
+        newPost.append("username", this.$store.state.auth.user.username);
       this.file = this.$refs.file.files[0];
       if (this.file !== null && this.file !== undefined) {
           newPost.append("image", this.file);
       }
-      console.log(newPost.get('text'));
+      console.log('message'+newPost.get('text'));
       await this.$store.dispatch('createPost', newPost)
       
     },
@@ -83,12 +85,6 @@ export default {
   margin-top: 20px;
   padding: 5px;
   border-radius: 8px;
-}
-
-img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
 }
 
 .btn {

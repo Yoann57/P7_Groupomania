@@ -37,6 +37,7 @@ export const postModule = {
         async getAllPosts({ commit }) {
           try{
           const response = await PostService.getAllPosts();
+          console.log('response',response);
             commit("setPosts", response.data);
           }catch(error){
             console.log(error.response);

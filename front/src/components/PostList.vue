@@ -7,67 +7,20 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ml-2">
-                            
+                                       <div class="h5 m-0">
+ message de {{post.username}} posté le : {{post.createdAt}}
+    </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card-body">
+      
                 <p class="card-text"> {{post.text}}</p>
 
-                <img :src="post.file" class="rounded img-fluid d-flex ml-auto mr-auto" accept="image/*" alt="image">
+                <img :src="post.file" class="rounded img-fluid d-flex ml-auto mr-auto" alt="image">
             </div>
-
-           <!-- <div class="card-footer">
-                <div class="right-footer">
-                    <a class="card-link" @click="likePost(post)"><i class="fa fa-gittip"></i></a>
-                    <a class="card-link" @click="commentPost(post)"><i class="fa fa-comment"></i></a>
-                    <a class="card-link"
-                        v-if="post.UserId === $store.state.user.userId || $store.state.user.isAdmin === 1"
-                        @click="edit(post)"><i class="fa fa-edit"></i></a>
-                    <a class="card-link"
-                        v-if="post.UserId === $store.state.user.userId || $store.state.user.isAdmin === 1"
-                        @click="deletePost(post)"><i class="fa fa-trash"></i></a>
-                </div>
-
-                <div class="left-footer">
-                    <span class="like-number">{{ post.Likes.length }} Like(s)</span>
-                </div>
-            </div>
-
-
-            <hr class="hr-text" data-content="COMMENTAIRES">
-
-
-            <div class="card gedf-card comment-card" v-for="comment in post.Comments" :key="comment.id">
-
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="ml-2">
-                                <div class="h5 m-0">{{ comment.User.username }}</div>
-                                <div class="h7 text-muted">{{ comment.User.email }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <p class="card-text"> {{comment.message}}</p>
-                </div>
-
-                <div class="card-footer">
-                    <div class="right-footer">
-                        <a class="card-link"
-                            v-if="comment.UserId === $store.state.user.userId || $store.state.user.isAdmin === 1"
-                            @click="editComment(comment)"><i class="fa fa-edit"></i></a>
-                        <a class="card-link"
-                            v-if="comment.UserId === $store.state.user.userId || $store.state.user.isAdmin === 1"
-                            @click="deleteComment(comment)"><i class="fa fa-trash"></i></a>
-                    </div>
-                </div>
-            </div>-->
         </div>
     </div>
 
@@ -76,7 +29,7 @@
 <script>
     import PostService from "../services/post";
     import {
-        
+    
         mapGetters
     } from "vuex";
 
@@ -89,20 +42,14 @@
                 required: false
             }
         },
-        data() {
-            return {
-                postTests: [{ text: "Hello", file:"", User: { username: 'Simon', email: 'simon@imal.com' } }],
-                comment: {
-                    message: "",
-                },
-            }
-        },
+        
         computed: {
+        
             ...mapGetters(['currentUser'
             ]),
-            ...mapGetters(['getPosts']
-                 
+            ...mapGetters(['getPosts']     
             )
+            
         },
         async mounted() {
             console.log("mouted")
@@ -161,6 +108,12 @@
 </script>
 
 <style scoped>
+
+img {
+    width: 250px;
+    height: 250px;
+}
+
     .headerPost p {
         font-size: 10px;
     }
