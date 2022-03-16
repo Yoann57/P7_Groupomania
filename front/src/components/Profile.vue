@@ -17,10 +17,10 @@
       <strong>Email:</strong>
       {{currentUser.email}}
     </p>
-    <strong>Rôle:</strong>
+    <!-- <strong>Rôle:</strong>
     <ul>
       <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 

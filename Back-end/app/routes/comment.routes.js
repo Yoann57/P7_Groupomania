@@ -23,7 +23,9 @@ module.exports = function(app) {
       );
       next();
     });
+app.get('/comments', [authJwt.verifyToken], commentCtrl.getAllComments);    
 app.get('/comment/:id', [authJwt.verifyToken], commentCtrl.getOneComment);
 app.delete('/comment/:id', [authJwt.verifyToken], commentCtrl.deleteComment);
 app.put('/comment/:id', [authJwt.verifyToken], commentCtrl.modifyComment);
+app.post('/posts/:id/comment', [authJwt.verifyToken], commentCtrl.addComment);
 }

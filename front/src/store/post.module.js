@@ -9,7 +9,8 @@ export const postModule = {
         comments: [],
     },
     getters: {
-      getPosts:(state) => state.posts
+      getPosts:(state) => state.posts,
+      getComments:(state) => state.comments
     },
       mutations: {
     
@@ -20,7 +21,11 @@ export const postModule = {
         setPost(state, post) {
         state.post = post
         },
-    
+
+        setComments(state, comments) {
+          state.comments = [...comments]
+        },
+
         setComment(state, comment) {
         state.comment = comment
         },
@@ -44,6 +49,15 @@ export const postModule = {
           }
         },
     
+        async getAllComments({ commit }) {
+          try{
+            const response = await PostService.getAllComments();
+            commit("setComments", response.data);
+          }catch(error){
+            console.log(error.response);
+          }
+        },
+
         async createPost({ commit }, formData) {
           const res = await PostService.createPost(formData);
           console.log(res)
@@ -82,6 +96,12 @@ export const postModule = {
           }catch(error){
            throw new Error(error.message)
           }
+        },
+
+        async addComment({ commit }, formData) {
+          const res = await PostService.addComment(formData);
+          console.log(res)
+          commit("addComment", res.data);
         },
     
         async getOneComment({ commit },{id}) {

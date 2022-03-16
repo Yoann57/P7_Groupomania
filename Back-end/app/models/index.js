@@ -6,9 +6,23 @@ const sequelize = new Sequelize(
   config.USER,
   config.PASSWORD,
   {
-    host: config.HOST,
-    dialect: config.dialect,
-    operatorsAliases: false,
+  //   timezone: "+01:00",
+  host: config.HOST,
+    dialect: 'mysql',
+  //   // dialectOptions: {
+  //   //    useUTC: false
+  //   //  },
+  //  //
+  // host: process.env.DB_HOST,
+  // dialect:'postgres',
+  // dialectOptions: {
+  //   useUTC: false,
+  //   timezone: '+02:00',
+  // },
+  timezone: '+01:00',
+  
+
+    
 
     pool: {
       max: config.pool.max,
@@ -25,7 +39,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
+//db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.post = require("../models/Post.js")(sequelize, Sequelize);
 db.comment = require("../models/Comment.js")(sequelize, Sequelize);
 
@@ -39,16 +53,16 @@ db.comment = require("../models/Comment.js")(sequelize, Sequelize);
 // db.comment.belongsTo(db.post);
 // db.role.belongsToMany(db.user);
 
-db.role.belongsToMany(db.user, {
-  through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId"
-});
-db.user.belongsToMany(db.role, {
-  through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId"
-});
+// db.role.belongsToMany(db.user, {
+//   through: "user_roles",
+//   foreignKey: "roleId",
+//   otherKey: "userId"
+// });
+// db.user.belongsToMany(db.role, {
+//   through: "user_roles",
+//   foreignKey: "userId",
+//   otherKey: "roleId"
+// });
 // db.user.hasMany(db.comment);
 
 // db.user.hasMany(db.post);
@@ -66,6 +80,6 @@ db.user.belongsToMany(db.role, {
 //   foreignKey: { name: 'postId', allowNull: false },
 //   hooks: true });
 
-db.ROLES = ["user", "admin"];
+// db.ROLES = ["user", "admin"];
 
 module.exports = db;

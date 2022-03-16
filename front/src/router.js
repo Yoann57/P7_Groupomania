@@ -2,7 +2,10 @@ import { createWebHistory, createRouter } from "vue-router";
 import Home from "./components/Home.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
-// lazy-loaded
+import ModifyPost from "./components/ModifyPost.vue";
+import CommentForm from "./components/CommentForm.vue";
+import ModifyComment from "./components/ModifyComment.vue";
+
 const Profile = () => import("./components/Profile.vue")
 
 const routes = [
@@ -26,8 +29,22 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    // lazy-loaded
     component: Profile,
+  },
+  {
+  path:"/modifyPost/:id",
+  name: "modifyPost",
+  component: ModifyPost,
+  },
+  {
+    path:"/commentForm/:id",
+    name:"commentForm",
+    component: CommentForm,
+  },
+  {
+  path:"/modifyComment/:id",
+  name:"modifyComment",
+  component: ModifyComment,
   }
 ];
 

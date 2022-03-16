@@ -18,30 +18,23 @@
 
 //////////////////////////////////////////::
 const multer = require('../middleware/multer-config');
-const commentCtrl = require('../controllers/comment');
 const postCtrl = require('../controllers/post');
-const { authJwt } = require("../middleware");
+const {
+  authJwt
+} = require("../middleware");
 
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
+module.exports = function (app) {
 
   app.get(
-    "/posts", 
+    "/posts",
     [authJwt.verifyToken],
-     postCtrl.getAllPosts
-     );
+    postCtrl.getAllPosts
+  );
   app.post('/posts', [authJwt.verifyToken], multer, postCtrl.createPost);
   app.get('/posts/:id', [authJwt.verifyToken], postCtrl.getOnePost);
   app.put('/posts/:id', [authJwt.verifyToken], multer, postCtrl.modifyPost);
   app.delete('/posts/:id', [authJwt.verifyToken], postCtrl.deletePost);
- app.post('/posts/like', [authJwt.verifyToken], postCtrl.likePost);
- app.post('/posts/comment', [authJwt.verifyToken], commentCtrl.addComment);
+  app.post('/posts/like', [authJwt.verifyToken], postCtrl.likePost);
+
 }
-////////////////////////////////////

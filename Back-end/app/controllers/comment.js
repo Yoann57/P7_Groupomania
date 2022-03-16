@@ -2,10 +2,9 @@ const fs = require('fs');
 const db = require('../models');
 const Comment = db.comment;
 const User = db.user;
+const Post = db.post;
 
 exports.addComment = (req, res, next) => {
-
-  // const Comment = models.comment;
 
   const PostId = req.params.id;
   console.log(req.body.userId);
@@ -16,8 +15,6 @@ exports.addComment = (req, res, next) => {
     userId: req.body.userId,
     PostId: PostId,
     comment: req.body.comment,
-    // message: comment.message
-
   });
   comment
     .then(() => res.status(201).json({
@@ -30,6 +27,26 @@ exports.addComment = (req, res, next) => {
         }
       )})
 }
+
+exports.getAllComments = (req, res) => {
+  const PostId = req.params.id;
+  Comment.findAll({
+    // where: {
+    //   PostId: PostId
+    // },
+      // include: [{
+      // model: PostId
+      // },]
+  })
+  .then((comments) => {
+    res.status(200).json(comments);
+  })
+  .catch((error) => {
+    res.status(400).json({
+      error: error,
+    });
+  });
+};
 
 exports.getOneComment = (req, res, next) => {
 
@@ -56,28 +73,44 @@ exports.getOneComment = (req, res, next) => {
 
 exports.modifyComment = (req, res, next) => {
 
-  const Comment = models.comment;
-  const commentObject = req.body.comment;
 
   Comment.findOne({
     where: {
-      id: req.params.id
-    }
-  }).then((comment) => {
-    if (req.userId == comment.userId || req.userRole === 1) {
-      comment.message = commentObject.message;
-    }
-    comment.save()
-      .then((e) => {
-        res.status(200).json({
-          message: 'Commentaire modifié !'
+      id: req.params.id,
+    },
+  })
+    .then((comment) => {
+      if (req.userId == comment.UserId) {
+        const dataToUpdate = {
+          comment: req.body.comment,
+        };
+        Comment.update(dataToUpdate, {
+          where: {
+            id: req.params.id,
+          },
         })
+          .then((response) =>
+            res.status(200).json({
+              response: " Commentaire modifié avec succès !",
+            })
+          )
+          .catch((err) =>
+            res.status(401).json({
+              err,
+            })
+          );
+      } else {
+        return res.status(403).json({
+          error: "UnAuthorize",
+        });
+      }
+    })
+    .catch((error) =>
+      res.status(500).json({
+        error,
       })
-      .catch(error => res.status(400).json({
-        error
-      }));
-  });
-}
+    );
+};
 
 exports.deleteComment = (req, res, next) => {
 
@@ -88,7 +121,7 @@ exports.deleteComment = (req, res, next) => {
       }
     })
     .then(response => {
-      if (req.userId == Comment.userId || req.userRole === 1) {
+      if (req.userId == Comment.userId) {
         if (response > 0) {
           res.status(200).json({
             message: "Le commentaire a été supprimé"

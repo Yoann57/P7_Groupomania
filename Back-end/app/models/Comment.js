@@ -13,7 +13,10 @@ module.exports = (sequelize, Datatypes) => {
         },
         userId:{
             type: Datatypes.INTEGER
-        }
+        },
+        postId:{
+            type: Datatypes.INTEGER
+        },
     });
     Comment.associate = (models) => {
         Comment.belongsTo(models.User, {

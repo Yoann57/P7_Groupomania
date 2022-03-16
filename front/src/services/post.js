@@ -16,19 +16,22 @@ class PostService {
         return axios.put (API_URL + 'posts/' + id , data, { headers: authHeader() })
     }
     deletePost(id) {
-        return axios.put (API_URL + 'posts/' + id, { headers: authHeader() })
+        return axios.delete (API_URL + 'posts/' + id, { headers: authHeader() })
     }
     likePost(id) {
         return axios.post (API_URL + 'posts/' + id + '/like',{}, { headers: authHeader() })
     }
+    getAllComments() {
+        return axios.get(API_URL + 'comments',{ headers: authHeader() });
+    }
     getOneComment(id) {
         return axios.get (API_URL + 'comment/' + id, { headers: authHeader() });
     }
-    commentAPost(id, data) {
+    addComment(id, data) {
         return axios.post (API_URL + 'posts/' + id + '/comment', data, { headers: authHeader() })
     }
-    modifyComment(id,comment) {
-        return axios.put (API_URL + 'comment/' + id, {comment: comment}, { headers: authHeader() })
+    modifyComment(commentId, data) {
+        return axios.put (API_URL + 'comment/' + commentId, data, { headers: authHeader() })
     }
     deleteComment(commentId) {
         return axios.delete (API_URL + 'comment/' + commentId, { headers: authHeader() })

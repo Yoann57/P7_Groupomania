@@ -3,6 +3,7 @@ const fs = require("fs");
 const db = require("../models");
 const Post = db.post;
 const User = db.user;
+const Comment = db.comment;
 
 exports.createPost = (req, res, next) => {
 
@@ -38,7 +39,7 @@ exports.modifyPost = (req, res, next) => {
     },
   })
     .then((post) => {
-      if (req.userId == post.UserId || req.userRole === 1) {
+      if (req.userId == post.UserId) {
         const dataToUpdate = {
           text: req.body.text,
         };
@@ -84,7 +85,7 @@ exports.deletePost = (req, res, next) => {
     },
   })
     .then((post) => {
-      if (req.userId == post.UserId || req.userRole === 1) {
+      if (req.userId == post.UserId || isAdmin === 1) {
         
         if (req.file) {
           dataDestroy.file = `${req.protocol}://${req.get("host")}/images/${
@@ -115,11 +116,11 @@ exports.getOnePost = (req, res, next) => {
     where: {
       id: req.params.id,
     },
-    include: [
-      {
-        model: User,
-      },
-    ],
+    // include: [
+    //   {
+    //     model: User,
+    //   },
+    // ],
   })
     .then((post) => {
       res.status(200).json(post);
@@ -131,9 +132,36 @@ exports.getOnePost = (req, res, next) => {
     });
 };
 
+// exports.getAllPosts = async (req, res) => {
+//   try {
+//     const posts = await db.post.findAll({
+     
+//       include: [
+//         {
+//           model: Comment
+//         },
+//       ],
+//     });
+//     res.status(200).send(posts);
+//   } catch (error) {
+//     return res.status(500).send({
+//       error: "Une erreur est survenu lors de la récupération des posts ",
+//     });
+//   }
+// };
+
 exports.getAllPosts = (req, res, next) => {
+
+ 
   
-  Post.findAll()
+  Post.findAll({
+//   include: [
+//     { 
+//     model: Comment
+//   },
+// ],
+})
+
     .then((posts) => {
       res.status(200).json(posts);
     })
