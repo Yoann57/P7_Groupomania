@@ -68,7 +68,7 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push("/profile");
+      this.$router.push("/");
     }
   },
   methods: {
@@ -77,7 +77,7 @@ export default {
 
       this.$store.dispatch("auth/login", user).then(
         () => {
-          this.$router.push("/profile");
+          this.$router.push("/");
         },
         (error) => {
           this.loading = false;
@@ -99,12 +99,10 @@ label {
   display: block;
   margin-top: 10px;
 }
-
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
 }
-
 .card {
   background-color: #f7f7f7;
   padding: 20px 25px 30px;
@@ -117,7 +115,6 @@ label {
   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
-
 .profile-img-card {
   width: 96px;
   height: 96px;
@@ -127,7 +124,6 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
-
 .error-feedback {
   color: red;
 }

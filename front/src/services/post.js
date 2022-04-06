@@ -18,9 +18,6 @@ class PostService {
     deletePost(id) {
         return axios.delete (API_URL + 'posts/' + id, { headers: authHeader() })
     }
-    likePost(id) {
-        return axios.post (API_URL + 'posts/' + id + '/like',{}, { headers: authHeader() })
-    }
     getAllComments() {
         return axios.get(API_URL + 'comments',{ headers: authHeader() });
     }
@@ -29,9 +26,6 @@ class PostService {
     }
     addComment(id, data) {
         return axios.post (API_URL + 'posts/' + id + '/comment', data, { headers: authHeader() })
-    }
-    modifyComment(commentId, data) {
-        return axios.put (API_URL + 'comment/' + commentId, data, { headers: authHeader() })
     }
     deleteComment(commentId) {
         return axios.delete (API_URL + 'comment/' + commentId, { headers: authHeader() })

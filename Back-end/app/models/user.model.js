@@ -8,6 +8,16 @@ module.exports = (sequelize, Sequelize) => {
       },
       password: {
         type: Sequelize.STRING
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN
+      },
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        unique: true,
+        allowNull: false,
+        autoIncrement: true
       }
     });
   

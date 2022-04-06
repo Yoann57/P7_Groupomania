@@ -5,17 +5,14 @@
         <textarea
           v-on:keydown="isInvalid = false"
           class="form-control"
-          v-model="comment"
-          id="comment"
-          name="comment"
+          v-model="commentaire"
+          id="commentaire"
+          name="commentaire"
           rows="6"
           maxlength="300"
           placeholder="Saisissez votre commentaire. (300 caractères max)"
         ></textarea>
       </div>
-
-      
-      
     </div>
     <div>
       <button type="submit" @click.prevent="addComment" class="btn">
@@ -35,9 +32,7 @@ export default {
   data: function() {
     return {
       Comment: {
-      userId:null,
-      PostId:null,
-      comment: "",
+      commentaire: "",
       }
     };
   },
@@ -48,25 +43,17 @@ export default {
         },
    methods: {
 
-            addComment(post) {
-                PostService.addComment(post.id, {
-                    comment: this.comment
+            addComment() {
+
+                PostService.addComment(this.$route.params.id, {
+                    userId:  this.$store.state.auth.user.id,
+                    commentaire: this.commentaire
                 }).then(() => {
                     alert("Le commentaire a bien été ajouté")
                     this.$router.push('/');
                 });
             },
-
-
         },
-  // async mounted() {
-  //   this.id = this.$route.params.id;
-  //   console.log(this.id);
-  //   const response = await PostService.getOnePost(this.id);
-  //   this.post = response.data;
-  //   console.log(this.post);
-  //   console.log(this.$store.state.auth.user.id);
-  // },
 };
 </script>
 
@@ -84,7 +71,6 @@ export default {
   background-color: #26207c;
   border-style: none;
   outline: none;
-  width: 30%;
   border-radius: 8px;
   height: 40px;
   color: white;

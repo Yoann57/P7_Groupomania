@@ -3,21 +3,22 @@ import PostService from "../services/post";
 export const postModule = {
 
     state: {
-
         posts: [],
         post:null,
         comments: [],
+        comment:null
     },
+
     getters: {
       getPosts:(state) => state.posts,
       getComments:(state) => state.comments
     },
+
       mutations: {
-    
         setPosts(state, posts) {
         state.posts = [...posts]
         },
-    
+        
         setPost(state, post) {
         state.post = post
         },
@@ -33,8 +34,6 @@ export const postModule = {
         addPost(state,post) {
           state.posts = [...state.posts, post]
         }
-
-    
       },
     
       actions: {
@@ -108,16 +107,6 @@ export const postModule = {
           try{
           const response = await PostService.getOneComment(id);
             commit("setComment", response.data);
-            return response.data;
-          }catch(error){
-            console.log(error.response);
-          }
-        },
-    
-        async modifyComment({ commit },{id,comment}) {
-          try{
-          const response = await PostService.modifyComment(id,comment);
-            commit(response.data);
             return response.data;
           }catch(error){
             console.log(error.response);

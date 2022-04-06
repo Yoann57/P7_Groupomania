@@ -16,17 +16,23 @@
     <p>
       <strong>Email:</strong>
       {{currentUser.email}}
-    </p>
-    <!-- <strong>Rôle:</strong>
-    <ul>
-      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
-    </ul> -->
+    </p> 
+       <button class="badge badge-danger mr-2" @click="deleteProfil()">
+      Supprimer votre compte
+       </button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Profile',
+  data(){
+    return {
+      user: null
+    }
+  },
+
   computed: {
     currentUser() {
       return this.$store.state.auth.user;
@@ -36,6 +42,25 @@ export default {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
+  },
+   methods: {
+           
+   async deleteProfil() {
+    
+    if (confirm("Souhaitez-vous supprimer votre compte?")) {
+     try {
+
+       await this.$store.dispatch('auth/deleteUser',this.currentUser);
+       window.localStorage.removeItem("user");
+       alert("votre profil a bien été supprimé");
+       this.$router.push("/");
+      } catch (error) {
+       console.log(error);
+      }
+     }
+    },         
   }
 };
+
 </script>
+

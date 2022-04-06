@@ -2,7 +2,7 @@
   <div class="main">
     <div
       class="card gedf-card post-card"
-      v-for="post in getPosts"
+      v-for="post in getPosts.slice().reverse()"
       :key="post.id"
     >
       <div class="card-header">
@@ -10,46 +10,54 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="ml-2">
               <div class="h5 m-0">
-                message de {{ post.username }} posté le :
-                {{ dateFormat(post.createdAt) }}
+                message de {{ post.user && post.user.username }} posté le :
+                {{ dateFormat(post.createdAt) }}            
               </div>
-            </div>
+            </div> 
           </div>
         </div>
       </div>
 
       <div class="card-body">
         <p class="card-text">{{ post.text }}</p>
-
         <img
           :src="post.file"
           class="rounded img-fluid d-flex ml-auto mr-auto"
           alt="image"
         />
-      </div>
+      </div>    
       <div class="card gedf-card comment-card">
-        <div class="card-body" v-for="comment in getComments" :key="comment.PostId">
-          <p class="card-text">{{ comment.comment }}</p>
-           <button class="badge badge-warning mr-2" @click="modifyComment(comment)">
-        Modifier le commentaire
-      </button>
+     <div class="h6 m-0">
+          <p>Commentaires</p>
+        <div class="card-body" v-for="comment in getComments" :key="comment.id">
+          <div class="card-body" v-if="comment.postId === post.id">
+        <div class="card gedf-card comment-card"> 
+           <div class="h7 m-0">
+                commentaire de {{ comment.user && comment.user.username }} posté le :
+                {{ dateFormat(comment.createdAt) }}
+            </div>   
+          <p class="card-text">{{ comment.commentaire }}</p>        
+</div> 
           <button
-            class="badge badge-danger mr-2"
+            class="badge badge-danger mr-2" v-if="currentUser && (currentUser.id == comment.userId || currentUser.isAdmin)"
             @click="deleteComment(comment)"
           >
             Supprimer le commentaire
           </button>
-        </div>
+          </div>
+       </div>
       </div>
+    </div>
 
       <button class="badge badge badge-success mr-2" @click="addComment(post)">
         Commenter
       </button>
 
-      <button class="badge badge-warning mr-2" @click="modifyPost(post)">
+      <button class="badge badge-warning mr-2" v-if="currentUser && (currentUser.id == post.userId || currentUser.isAdmin)" @click="modifyPost(post)">
         Modifier
       </button>
-      <button class="badge badge-danger mr-2" @click="deletePost(post)">
+     
+      <button class="badge badge-danger mr-2" v-if="currentUser && (currentUser.id == post.userId || currentUser.isAdmin)" @click="deletePost(post)">
         Supprimer
       </button>
     </div>
@@ -69,17 +77,16 @@ export default {
       required: false,
     },
   },
-  // data() {
-  //     return {
-  //         comment: ""
-  //     }
-  // },
-
+ 
   computed: {
-    ...mapGetters(["currentUser"]),
+  
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
     ...mapGetters(["getPosts"]),
     ...mapGetters(["getComments"]),
   },
+
   async mounted() {
     console.log("mouted");
     await this.$store.dispatch("getAllPosts");
@@ -94,7 +101,6 @@ export default {
     async deletePost(post) {
       if (confirm("Souhaitez-vous supprimer ce post?")) {
         try {
-          console.log(post);
           await PostService.deletePost(post.id);
           alert("Le post a bien été supprimé");
           this.$store.dispatch("getAllPosts");
@@ -104,17 +110,8 @@ export default {
       }
     },
 
-    async likePost(post) {
-      await PostService.likePost(post.id);
-      this.$store.dispatch("getAllPosts");
-    },
-
     async addComment(post) {
       this.$router.push("/commentForm/" + post.id);
-    },
-
-    async modifyComment(comment) {
-      this.$router.push("/modifyComment/" + comment.id);
     },
 
     async deleteComment(comment) {
@@ -128,11 +125,7 @@ export default {
         }
       }
     },
-
-    onChangePage(pageOfPosts) {
-      // update page of items
-      this.pageOfPosts = pageOfPosts;
-    },
+    
     dateFormat(date) {
       const event = new Date(date);
       const options = {
@@ -214,10 +207,30 @@ h1 {
 .comment-card {
   margin-bottom: 0.1rem;
   margin-top: 0.1rem;
+  border-top: 2px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
 }
 
 .dropdown-toggle::after {
   content: none;
   display: none;
+}
+.card-body{
+  padding:0;
+}
+
+.h6{
+  text-align: center;
+  background-color: lightblue;
+}
+.mr-2, .mx-2 {
+    margin: 0.3rem;
+}
+.card-text:last-child {
+    margin-bottom: 0.6rem;
+}
+p {
+    margin: 0.6rem;
 }
 </style>

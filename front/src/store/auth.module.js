@@ -1,4 +1,5 @@
 import AuthService from '../services/auth.service';
+import UserService from '../services/user.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -36,8 +37,20 @@ export const auth = {
           return Promise.reject(error);
         }
       );
-    }
-  },
+    },
+     deleteUser({ commit }, {id}) {
+     return UserService.deleteUser(id).then(
+       response => {
+      commit('removeCurrentUser');
+        return Promise.resolve(response.data);
+      },
+      error => {
+       return Promise.reject(error);
+      }
+     );
+   },
+ },
+
   mutations: {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
@@ -56,7 +69,15 @@ export const auth = {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
-    }
+    },
+    removeCurrentUser(state){
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userDetails');
+      state.currentUser = null;
+      state.userDetails = null;
+      state.status.loggedIn = false;
+      state.user = null;
+  },
   },
   getters: {
     currentuser(state) {

@@ -7,12 +7,7 @@ const store = createStore({
     postModule,
   },
   state: {
-
-  
-  
 },
-
-
 });
 
 export default store;

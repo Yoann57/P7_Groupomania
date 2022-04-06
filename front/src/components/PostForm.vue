@@ -18,7 +18,7 @@
 					<div class="col-12 justify-content-center">
 						<div class="form-group justify-content-center">
 							<input
-								@change="selectFile()"
+								@change="selectFile"
 								type="file"
 								ref="file"
 								name="image"
@@ -32,15 +32,13 @@
 					<div><button type="submit" @click.prevent="submitForm" class="btn">Publier</button></div>
 					<router-link to="/PostList">
 					</router-link
-					>
-				
+					>		
   </div>
 
 </template>
 
 <script>
- import {
-        
+ import {  
         mapGetters
     } from "vuex";
 
@@ -56,7 +54,7 @@ export default {
   },
   methods: {
    async submitForm() {
-     console.log(this.$store.state.auth.user);
+
       const newPost = new FormData();
       newPost.append("text", this.text);
        newPost.append("userId", this.$store.state.auth.user.id);
@@ -65,9 +63,7 @@ export default {
       if (this.file !== null && this.file !== undefined) {
           newPost.append("image", this.file);
       }
-      console.log('message'+newPost.get('text'));
       await this.$store.dispatch('createPost', newPost)
-      
     },
     computed: {
             ...mapGetters(['auth/currentUser'
@@ -91,7 +87,6 @@ export default {
   background-color: #26207c;
   border-style: none;
   outline: none;
-  width: 20%;
   border-radius: 8px;
   height: 40px;
   color: white;

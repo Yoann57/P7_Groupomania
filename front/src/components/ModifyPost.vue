@@ -17,7 +17,7 @@
       <div class="col-12 justify-content-center">
         <div class="form-group justify-content-center">
           <input
-            @change="selectFile()"
+            @change="selectFile"
             type="file"
             ref="file"
             name="image"
@@ -53,30 +53,24 @@ export default {
 
   methods: {
     async modifyPost() {
-      console.log(this.id);
 
       const newPost = new FormData();
 
       newPost.append("text", this.post.text);
       newPost.append("userId", this.$store.state.auth.user.id);
-      newPost.append("username", this.$store.state.auth.user.username);
       this.file = this.$refs.file.files[0];
       if (this.file !== null && this.file !== undefined) {
         newPost.append("image", this.file);
       }
-      console.log(this.post);
       await PostService.modifyPost(this.id, newPost);
       this.$router.push("/");
     },
   },
   async mounted() {
     this.id = this.$route.params.id;
-    console.log(this.id);
     const response = await PostService.getOnePost(this.id);
     this.post = response.data;
     this.isLoaded = true;
-    console.log(this.post);
-    console.log(this.$store.state.auth.user.id);
   },
 };
 </script>
@@ -95,7 +89,6 @@ export default {
   background-color: #26207c;
   border-style: none;
   outline: none;
-  width: 20%;
   border-radius: 8px;
   height: 40px;
   color: white;

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Datatypes) => {
-    const Comment = sequelize.define('Comment', {
+    const comment = sequelize.define('Comment', {
         id: {
             type: Datatypes.INTEGER,
             primaryKey: true,
@@ -7,19 +7,20 @@ module.exports = (sequelize, Datatypes) => {
             allowNull: false,
             autoIncrement: true
         },
-       comment: {
+        commentaire: {
             type: Datatypes.TEXT,
             allowNull: false
         },
         userId:{
-            type: Datatypes.INTEGER
+            type: Datatypes.INTEGER,
         },
         postId:{
             type: Datatypes.INTEGER
         },
+        
     });
-    Comment.associate = (models) => {
-        Comment.belongsTo(models.User, {
+    comment.associate = (models) => {
+        comment.belongsTo(models.User, {
             as: 'user',
             foreignKey: 'userId'
           })
@@ -28,11 +29,10 @@ module.exports = (sequelize, Datatypes) => {
                 allowNull: false
             }, onDelete: 'CASCADE'
        }
-        Comment.belongsTo(models.Post, {
-            foreignKey: {
-                allowNull: false
-            }, onDelete: 'CASCADE'
-        })
+       comment.belongsTo(models.Post, {
+        onDelete: 'cascade',
+        foreignKey: { name: 'postId', allowNull: false },
+        hooks: true });
     }
-    return Comment;
+    return comment;
 }

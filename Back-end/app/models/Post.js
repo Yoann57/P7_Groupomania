@@ -19,13 +19,10 @@ module.exports = (sequelize, Datatypes) => {
             type: Datatypes.STRING,
             allowNull: true
         },
-        username:{
-            type: Datatypes.STRING,
-            allowNull: false
-        }
+      
     });
     post.associate = (models) => {
-        post.belongsTo(models.User,{
+        post.belongsTo(models.User, {
             as: 'user',
             foreignKey: 'userId'
           })
@@ -34,7 +31,6 @@ module.exports = (sequelize, Datatypes) => {
                 allowNull: false
             }, onDelete: 'CASCADE'
        }
-                post.hasMany(models.Like)
                 post.hasMany(models.Comment)
     }
     return post;

@@ -63,18 +63,18 @@ export default {
       username: yup
         .string()
         .required("Username is required!")
-        .min(3, "Must be at least 3 characters!")
-        .max(20, "Must be maximum 20 characters!"),
+        .min(3, "Doit contenir 3 caracteres au minimum!")
+        .max(20, "Doit contenir 20 caracteres au maximum!"),
       email: yup
         .string()
         .required("Email is required!")
-        .email("Email is invalid!")
-        .max(50, "Must be maximum 50 characters!"),
+        .email("Email invalide!")
+        .max(50, "Doit contenir au maximu 50 caracteres!"),
       password: yup
         .string()
         .required("Password is required!")
-        .min(6, "Must be at least 6 characters!")
-        .max(40, "Must be maximum 40 characters!"),
+        .min(6, "Doit contenir au minimum 6 caracteres!")
+        .max(40, "Doit contenir au maximum 40 caracteres!"),
     });
 
     return {
@@ -91,7 +91,7 @@ export default {
   },
   mounted() {
     if (this.loggedIn) {
-      this.$router.push("/profile");
+      this.$router.push("/");
     }
   },
   methods: {
@@ -107,29 +107,29 @@ export default {
           this.loading = false;
            this.$store.dispatch("auth/login", user).then(
         () => {
-          this.$router.push("/profile");
+          this.$router.push("/");
         },
-        (error) => {
-          this.loading = false;
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
+        // (error) => {
+        //   this.loading = false;
+        //   this.message =
+        //     (error.response &&
+        //       error.response.data &&
+        //       error.response.data.message) ||
+        //     error.message ||
+        //     error.toString();
+        // }
       );
         },
-        (error) => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          this.successful = false;
-          this.loading = false;
-        }
+        // (error) => {
+        //   this.message =
+        //     (error.response &&
+        //       error.response.data &&
+        //       error.response.data.message) ||
+        //     error.message ||
+        //     error.toString();
+        //   this.successful = false;
+        //   this.loading = false;
+        // }
       );
     },
   },

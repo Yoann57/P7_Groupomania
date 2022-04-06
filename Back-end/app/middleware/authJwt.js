@@ -1,16 +1,15 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
-const db = require("../models");
-const User = db.user;
+// const config = require("../config/auth.config.js");
 
 verifyToken = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     if (token) {
-      jwt.verify(token, config.secret, (err, decodedToken) => {
+      jwt.verify(token, process.env.SECRET_KEY, (err, decodedToken) => {
         if (err) {
           console.log(err);
         } else {
           console.log(decodedToken.userId);
+          req.userId = decodedToken.id;
           next();
         }
       });
@@ -18,63 +17,7 @@ verifyToken = (req, res, next) => {
       console.log('no token !');
     }
   };
-
-// isAdmin = (req, res, next) => {
-//   User.findByPk(req.userId).then(user => {
-//     user.getRoles().then(roles => {
-//       if (roles.some(role => role.name === "admin")) {
-//         next()
-//       }
-//       res.status(403).send({
-//         message: "Require Admin Role!"
-//       });
-//     });
-//   });
-// };
-
-// isModerator = (req, res, next) => {
-//   User.findByPk(req.userId).then(user => {
-//     user.getRoles().then(roles => {
-//       for (let i = 0; i < roles.length; i++) {
-//         if (roles[i].name === "moderator") {
-//           next();
-//           return;
-//         }
-//       }
-
-//       res.status(403).send({
-//         message: "Require Moderator Role!"
-//       });
-//     });
-//   });
-// };
-
-// isModeratorOrAdmin = (req, res, next) => {
-//   User.findByPk(req.userId).then(user => {
-//     user.getRoles().then(roles => {
-//       for (let i = 0; i < roles.length; i++) {
-//         if (roles[i].name === "moderator") {
-//           next();
-//           return;
-//         }
-
-//         if (roles[i].name === "admin") {
-//           next();
-//           return;
-//         }
-//       }
-
-//       res.status(403).send({
-//         message: "Require Moderator or Admin Role!"
-//       });
-//     });
-//   });
-// };
-
-const authJwt = {
-  verifyToken: verifyToken,
-  // isAdmin: isAdmin,
-  // isModerator: isModerator,
-  // isModeratorOrAdmin: isModeratorOrAdmin
-};
+  const authJwt = {
+    verifyToken: verifyToken,
+  };
 module.exports = authJwt;

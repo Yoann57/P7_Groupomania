@@ -6,7 +6,7 @@
       alt="Logo Groupomania"
     />
     <div class="bienvenue">
-      Bienvenue sur le réseau social de Groupomania beta
+      Bienvenue sur le réseau social de Groupomania
     </div>
     <div class="annonce">
      <router-link to="login">Connectez vous</router-link>  ou <router-link to="register">créez un compte</router-link> pour poster vos messages
@@ -33,11 +33,9 @@ export default {
   methods: {
     disconnected() {
       let disconnected = localStorage.getItem("user");
-      if (disconnected == null) {
-          
+      if (disconnected == null) {    
         return true;
       } else {
-         
         return false;
       }
     },

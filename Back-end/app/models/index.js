@@ -1,28 +1,14 @@
 const config = require("../config/db.config.js");
-
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
-  {
-  //   timezone: "+01:00",
-  host: config.HOST,
-    dialect: 'mysql',
-  //   // dialectOptions: {
-  //   //    useUTC: false
-  //   //  },
-  //  //
-  // host: process.env.DB_HOST,
-  // dialect:'postgres',
-  // dialectOptions: {
-  //   useUTC: false,
-  //   timezone: '+02:00',
-  // },
-  timezone: '+01:00',
-  
+require('dotenv').config();
 
-    
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    timezone: '+01:00',
 
     pool: {
       max: config.pool.max,
@@ -39,47 +25,14 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
-//db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.post = require("../models/Post.js")(sequelize, Sequelize);
 db.comment = require("../models/Comment.js")(sequelize, Sequelize);
 
-// db.user.hasMany(db.role);
-// db.user.belongsToMany(db.role);
-// db.user.hasMany(db.comment);
-// db.user.hasMany(db.post);
-// db.post.hasMany(db.comment);
-// db.post.belongsTo(db.user);
-// db.comment.belongsTo(db.user);
-// db.comment.belongsTo(db.post);
-// db.role.belongsToMany(db.user);
-
-// db.role.belongsToMany(db.user, {
-//   through: "user_roles",
-//   foreignKey: "roleId",
-//   otherKey: "userId"
-// });
-// db.user.belongsToMany(db.role, {
-//   through: "user_roles",
-//   foreignKey: "userId",
-//   otherKey: "roleId"
-// });
-// db.user.hasMany(db.comment);
-
-// db.user.hasMany(db.post);
-// db.post.hasMany(db.comment);
-// db.post.belongsTo(db.user);
-// db.comment.belongsTo(db.user);
-// db.comment.belongsTo(db.post);
-
-// db.comment.belongsTo(db.user, {
-//   onDelete: 'cascade',
-//   foreignKey: { name: 'userId', allowNull: false },
-//   hooks: true });
-// db.comment.belongsTo(db.post, {
-//   onDelete: 'cascade',
-//   foreignKey: { name: 'postId', allowNull: false },
-//   hooks: true });
-
-// db.ROLES = ["user", "admin"];
+db.user.hasMany(db.comment);
+db.user.hasMany(db.post);
+db.post.hasMany(db.comment);
+db.post.belongsTo(db.user);
+db.comment.belongsTo(db.user);
+db.comment.belongsTo(db.post);
 
 module.exports = db;
